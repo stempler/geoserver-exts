@@ -18,7 +18,8 @@
         <property name="instanceId" value="#{ systemProperties['GS_CW_INSTANCE_ID'] ?: ''}"/>
     </bean>
 
-    <bean id="gs-cloudwatch-cs" class="com.boundlessgeo.suite.geoserver.cloudwatch.aws.CloudwatchSender">
+    <bean id="gs-cloudwatch-cs" class="com.boundlessgeo.suite.geoserver.cloudwatch.aws.CloudwatchSender" init-method="afterPropertiesSet">
+        <property name="region" value="#{systemProperties['GS_CW_REGION'] ?: 'us-east-1'}"/>
         <property name="providers">
             <list>
                 <ref bean="gs-cloudwatch-jmx"/>

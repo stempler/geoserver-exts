@@ -6,6 +6,8 @@
 package com.boundlessgeo.suite.geoserver.cloudwatch.aws;
 
 import com.amazonaws.AmazonClientException;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.cloudwatch.AmazonCloudWatchAsyncClient;
 import com.amazonaws.services.cloudwatch.model.MetricDatum;
 import com.amazonaws.services.cloudwatch.model.PutMetricDataRequest;
@@ -30,6 +32,7 @@ public class CloudwatchSender {
     protected AmazonCloudWatchAsyncClient cloudwatch;
 
     protected boolean enabled = false;
+    protected String region;
 
     private static final Logger logger = LoggerFactory.getLogger(CloudwatchSender.class);
 
@@ -46,6 +49,19 @@ public class CloudwatchSender {
         catch(Exception ex)
         {
             logger.error("Error initializing AWS Client!");
+            logger.error(ex.getMessage());
+        }
+    }
+
+    public void afterPropertiesSet()
+    {
+        try
+        {
+            cloudwatch.setRegion(Region.getRegion(Regions.fromName(region)));
+        }
+        catch(Exception ex)
+        {
+            logger.error("Error setting AWS Client region!");
             logger.error(ex.getMessage());
         }
     }
@@ -140,5 +156,10 @@ public class CloudwatchSender {
     public void setProviders(List<MetricProvider> providers)
     {
         this.providers = providers;
+    }
+
+    public void setRegion(String region)
+    {
+        this.region = region;
     }
 }
