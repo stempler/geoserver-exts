@@ -11,7 +11,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.Serializable;
-import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +39,6 @@ import org.locationtech.geogig.api.RevCommit;
 import org.locationtech.geogig.api.TestPlatform;
 import org.locationtech.geogig.api.plumbing.FindTreeChild;
 import org.locationtech.geogig.api.plumbing.LsTreeOp;
-import org.locationtech.geogig.api.plumbing.ResolveGeogigDir;
 import org.locationtech.geogig.api.porcelain.CommitOp;
 import org.locationtech.geogig.api.porcelain.LogOp;
 import org.locationtech.geogig.cli.test.functional.general.CLITestContextBuilder;
@@ -54,6 +52,8 @@ import org.w3c.dom.Document;
 
 import com.google.common.base.Optional;
 import com.google.common.collect.ImmutableList;
+import java.net.URI;
+import org.locationtech.geogig.api.plumbing.ResolveGeogigURI;
 
 @TestSetup(run = TestSetupFrequency.REPEAT)
 public class WFSIntegrationTest extends WFSTestSupport {
@@ -130,8 +130,8 @@ public class WFSIntegrationTest extends WFSTestSupport {
         ds.setWorkspace(ws);
         Map<String, Serializable> connParams = ds.getConnectionParameters();
 
-        Optional<URL> geogigDir = helper.getGeogig().command(ResolveGeogigDir.class).call();
-        File repositoryUrl = new File(geogigDir.get().toURI()).getParentFile();
+        Optional<URI> geogigDir = helper.getGeogig().command(ResolveGeogigURI.class).call();
+        File repositoryUrl = new File(geogigDir.get()).getParentFile();
         assertTrue(repositoryUrl.exists() && repositoryUrl.isDirectory());
 
         connParams.put(GeoGigDataStoreFactory.REPOSITORY.key, repositoryUrl);

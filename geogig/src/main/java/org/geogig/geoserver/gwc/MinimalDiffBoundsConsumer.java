@@ -10,12 +10,11 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 import java.util.LinkedList;
 import java.util.List;
 
-import javax.annotation.Nullable;
+import org.eclipse.jdt.annotation.Nullable;
 
 import org.geotools.geometry.jts.JTS;
 import org.locationtech.geogig.api.Bounded;
 import org.locationtech.geogig.api.Bucket;
-import org.locationtech.geogig.api.Node;
 import org.locationtech.geogig.api.NodeRef;
 import org.locationtech.geogig.api.plumbing.diff.PreOrderDiffWalk;
 
@@ -37,24 +36,24 @@ class MinimalDiffBoundsConsumer implements PreOrderDiffWalk.Consumer {
     /**
      * Accumulates non punctual differences (i.e. bounding polygons)
      */
-    private List<Geometry> nonPoints = new LinkedList<Geometry>();
+    private List<Geometry> nonPoints = new LinkedList<>();
 
-    private Predicate<Node> treeNodeFilter = Predicates.alwaysTrue();
+    private Predicate<NodeRef> treeNodeFilter = Predicates.alwaysTrue();
 
-    private Envelope envBuff = new Envelope();
+    private final Envelope envBuff = new Envelope();
 
     public void setTreeNameFilter(final String treeName) {
         checkArgument(!isNullOrEmpty(treeName), "treeName can't be null or empty");
-        this.treeNodeFilter = new Predicate<Node>() {
+        this.treeNodeFilter = new Predicate<NodeRef>() {
             private final String name = treeName;
 
             /**
              * @return true if node name is null, empty, or equal to {@code treeName}
              */
             @Override
-            public boolean apply(Node node) {
-                return node == null || NodeRef.ROOT.equals(node.getName())
-                        || name.equals(node.getName());
+            public boolean apply(NodeRef nodeRef) {
+                return nodeRef == null || NodeRef.ROOT.equals(nodeRef.getNode().getName())
+                        || name.equals(nodeRef.getNode().getName());
             }
         };
     }
@@ -78,13 +77,14 @@ class MinimalDiffBoundsConsumer implements PreOrderDiffWalk.Consumer {
     }
 
     @Override
-    public void feature(@Nullable Node left, @Nullable Node right) {
+    public boolean feature(@Nullable final NodeRef left, @Nullable final NodeRef right) {
         addEnv(left);
         addEnv(right);
+        return true;
     }
 
     @Override
-    public boolean tree(@Nullable Node left, @Nullable Node right) {
+    public boolean tree(@Nullable final NodeRef left, @Nullable final NodeRef right) {
         if (!treeNodeFilter.apply(left) || !treeNodeFilter.apply(right)) {
             return false;
         }
@@ -99,7 +99,9 @@ class MinimalDiffBoundsConsumer implements PreOrderDiffWalk.Consumer {
     }
 
     @Override
-    public boolean bucket(int bucketIndex, int bucketDepth, Bucket left, Bucket right) {
+    public boolean bucket(final NodeRef leftParent, final NodeRef rightParent,
+                final int bucketIndex, final int bucketDepth, @Nullable final Bucket left,
+                @Nullable final Bucket right) {
         if (left == null) {
             addEnv(right);
             return false;
@@ -149,12 +151,14 @@ class MinimalDiffBoundsConsumer implements PreOrderDiffWalk.Consumer {
     }
 
     @Override
-    public void endTree(Node left, Node right) {
+    public void endTree(@Nullable final NodeRef left, @Nullable final NodeRef right) {
         // nothing to do, intentionally blank
     }
 
     @Override
-    public void endBucket(int bucketIndex, int bucketDepth, Bucket left, Bucket right) {
+    public void endBucket(NodeRef leftParent, NodeRef rightParent, 
+        final int bucketIndex, final int bucketDepth, @Nullable final Bucket left,
+        @Nullable final Bucket right) {
         // nothing to do, intentionally blank
     }
 }
