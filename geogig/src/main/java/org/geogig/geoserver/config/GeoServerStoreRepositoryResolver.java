@@ -7,6 +7,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.locationtech.geogig.geotools.data.GeoGigDataStoreFactory;
 
 import com.google.common.base.Throwables;
+import java.io.File;
 
 public class GeoServerStoreRepositoryResolver implements GeoGigDataStoreFactory.RepositoryLookup {
     
@@ -16,11 +17,9 @@ public class GeoServerStoreRepositoryResolver implements GeoGigDataStoreFactory.
         try {
             RepositoryInfo info = repositoryManager.get(repository);
             //enforce unix file seperators
-            String unixsep = FilenameUtils.separatorsToUnix(info.getLocation());
+            File unixsep = new File(info.getLocation());
             //check if refers to file, if it does add the file prefix
-            if(FilenameUtils.getPrefix(unixsep)!=null&&!unixsep.startsWith("file://"))
-            	unixsep = "file://"+unixsep;
-            return URI.create(unixsep);
+            return unixsep.toURI();
         } catch (IOException e) {
             throw Throwables.propagate(e);
         }
