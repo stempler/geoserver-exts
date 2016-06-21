@@ -553,13 +553,13 @@
     <repository>
       <id>boundless</id>
       <name>Boundless Maven Repository</name>
-      <url>https://boundless.artifactoryonline.com/boundless/release/</url>
+      <url>https://repo.boundlessgeo.com/release/</url>
       <uniqueVersion>false</uniqueVersion>
     </repository>
     <snapshotRepository>
       <id>boundless</id>
       <name>Boundless Maven Repository</name>
-      <url>https://boundless.artifactoryonline.com/boundless/snapshot/</url>
+      <url>https://repo.boundlessgeo.com/snapshot/</url>
       <uniqueVersion>false</uniqueVersion>
     </snapshotRepository>
   </distributionManagement>
