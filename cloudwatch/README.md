@@ -37,14 +37,14 @@ GS_CW_AUTOSCALING_GROUP_NAME="testgroup"
 #export GS_CW_JMX="true"
 
 ### Geoserver metrics
-GS_CW_WATCH_WMS="true"
-GS_CW_WATCH_WPS="true"
-#GS_CW_WATCH_WFS=true
-#GS_CW_WATCH_CSW=true
-#GS_CW_WATCH_OSW=true
-#GS_CW_WATCH_WCS100=true
-#GS_CW_WATCH_WCS111=true
-#GS_CW_WATCH_WCS20=true
+#GS_CW_WATCH_WMS="true"
+#GS_CW_WATCH_WPS="true"
+#GS_CW_WATCH_WFS="true"
+#GS_CW_WATCH_CSW="true"
+#GS_CW_WATCH_OSW="true"
+#GS_CW_WATCH_WCS100="true"
+#GS_CW_WATCH_WCS111="true"
+#GS_CW_WATCH_WCS20="true"
 
 ```
 - Insert the AWS access key and secret key variables.
