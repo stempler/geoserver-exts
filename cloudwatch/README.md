@@ -23,8 +23,8 @@ These instructions assume that the Boundless Suite installer for Linux was used 
 GS_CW_INTERVAL="10000"
 
 ### AWS Authentication
-AWS_ACCESS_KEY_ID="[your_access_key]"		<-- EDIT THIS LINE HERE
-AWS_SECRET_KEY="[your_secret_key]"			<-- EDIT THIS LINE HERE
+AWS_ACCESS_KEY_ID="[your_access_key]"   #    <-- EDIT THIS LINE HERE
+AWS_SECRET_KEY="[your_secret_key]"      #    <-- EDIT THIS LINE HERE
 
 ### Instance specific settings
 GS_CW_ENABLE_PER_INSTANCE_METRICS="true" 
