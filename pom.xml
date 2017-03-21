@@ -410,7 +410,7 @@
       <version>${gt.version}</version>
     </dependency>
     <dependency>
-      <groupId>org.geoserver.community</groupId>
+      <groupId>org.geoserver.extension</groupId>
       <artifactId>gs-ysld</artifactId>
       <version>${gs.version}</version>
     </dependency>
