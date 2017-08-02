@@ -10,6 +10,14 @@ geoserver-exts currently depends on a recent version of geoserver master. You ca
     cd geoserver-exts
     mvn install
 
+
+**Building only a specific extension**
+
+For example:
+
+    mvn -pl mongodb clean package
+
+
 Adding a new extension
 ----------------------
 
